@@ -17,7 +17,9 @@ const RegisterPage = () => {
                 },
                 body: JSON.stringify({ username, email, password }),
             });
-    
+            
+            const responseData = await response.json();
+
             if (response.status === 201) {
                 setSuccess('Registration successful!');
                 setError('');
@@ -26,9 +28,10 @@ const RegisterPage = () => {
                 setEmail('');
                 setPassword('');
             } else if (response.status === 400) {
-                const responseData = await response.json();
                 if (responseData.username) {
-                    setError('Username already exists. Please choose a different one.');
+                    setError(responseData.username[0]);
+                } else if (responseData.email) {
+                    setError(responseData.email[0]);
                 } else {
                     setError('Something went wrong. Please try again.');
                 }
