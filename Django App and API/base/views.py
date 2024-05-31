@@ -9,10 +9,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import myUserCreationForm
 from django.contrib.auth import login
 
-
 from .models import Task
 
-# Create your views here.
 
 class LoginUser(LoginView):
     fields = '__all__'

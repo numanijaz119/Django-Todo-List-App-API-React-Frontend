@@ -7,6 +7,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
     path('', views.getRoutes),
+    path('register/', views.registerUser),
     path('tasks/', views.getTasks),
     path('tasks/<int:pk>', views.getTask),
     path('create-task/', createTask),

@@ -16,10 +16,11 @@ const Header = () => {
                 ) : (
                     <Link to="/login" className="btn btn-link">Login</Link>
                 )}
+                {!user && <Link to="/register" className="btn btn-link">Register</Link>}
             </div>
             {user && <div className="ml-auto"><p className="mb-0">Welcome <span className="font-weight-bold text-primary">{user.username}</span></p></div>}
         </div>
     );
 };
 
-export default Header
+export default Header;

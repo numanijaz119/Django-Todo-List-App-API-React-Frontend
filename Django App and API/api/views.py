@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer, UserSerializer
 from base.models import Task
 from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -27,6 +27,7 @@ def getRoutes(request):
 
     routes = [
         {'Task List':'/api/tasks'},
+        {'Task List':'/api/register'},
         {'Task Detail':'/api/tasks/id/'},
         {'Task-Create':'/api/create-task/'},
         {'Task Update':'/api/tasks/update-task/id/'},
@@ -39,10 +40,20 @@ def getRoutes(request):
     return Response(routes)
 
 
+@api_view(['POST'])
+def registerUser(request):
+    if request.method == 'POST':
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getTasks(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.filter(user=request.user)
     serializer = TaskSerializer(tasks, many=True)
     return Response(serializer.data)
 
